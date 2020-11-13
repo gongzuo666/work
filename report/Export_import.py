@@ -159,13 +159,16 @@ def filename(name):
     else:
         return f"导入失败：{reps.text}"
 
-def main():
+# def main():
+#     print(export_report())
+#     print(filename(file))
+#     os.remove(file)
+
+if __name__ == '__main__':
     print(export_report())
     print(filename(file))
     os.remove(file)
-
-if __name__ == '__main__':
-    main()
+    # main()
     # BlockingScheduler
     # scheduler = BlockingScheduler()
     # scheduler.add_job(main, 'cron', day_of_week='1-5', hour='', minute=20)
