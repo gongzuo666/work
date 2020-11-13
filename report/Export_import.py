@@ -20,8 +20,13 @@ yesterday = today - datetime.timedelta(days=1)
 file = f'D:/广点通_{today}.csv'
 
 def export_report():
+    # 这两行是实现无界面的关键代码
+    option = webdriver.ChromeOptions()
+    option.add_argument('--headless')  # 实现静默模式，在电脑上不显示页面
+    option.add_argument('window-size=1300,1300')  # 设置浏览器窗口大小
+    option.add_argument('--start-maximized')
     # 打开chrome浏览器
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(chrome_options=option)
     # 访问网址
     driver.get("https://sso.e.qq.com/login/hub?sso_redirect_uri=https%3A%2F%2Fe.qq.com%2Fdev%2Flogin%3F&service_tag=14")
 

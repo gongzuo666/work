@@ -9,15 +9,17 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import shutil
 from selenium.webdriver.common.action_chains import ActionChains
+
 # 这两行是实现无界面的关键代码
 option = webdriver.ChromeOptions()
-option.add_argument('headless')  # 实现静默模式，在电脑上不显示页面
-
+option.add_argument('--headless')  # 实现静默模式，在电脑上不显示页面
+option.add_argument('window-size=1300,1300')
+option.add_argument('--start-maximized')
 # 取消浏览器出现'Chrome正在受到自动软件的控制'
 # option=webdriver.ChromeOptions()
 # option.add_experimental_option("excludeSwitches", ['enable-automation'])
 #打开浏览器
-driver=webdriver.Chrome()
+driver = webdriver.Chrome(chrome_options=option)
 
 def login(name,password):
 
@@ -28,14 +30,15 @@ def login(name,password):
     driver.maximize_window()
     # 刷新页面
     driver.refresh()
-    # # 切换到这个内嵌网页
+    # 切换到这个内嵌网页
     eIframe = driver.find_element_by_css_selector("#qqLoginFrame")
     driver.switch_to.frame(eIframe)
     time.sleep(1)
     eleIframe = driver.find_element_by_css_selector("#ptlogin_iframe")
     driver.switch_to.frame(eleIframe)
-    time.sleep(5)
-    driver.find_element_by_css_selector("body >div > div#bottom_qlogin > #switcher_plogin").click()
+    time.sleep(3)
+    driver.find_element_by_css_selector("#switcher_plogin").click()
+    # driver.find_element_by_xpath('//*[@id="switcher_plogin"]').click()
     # driver.find_element_by_link_text("帐号密码登录").click()
     # 2 输入搜索关键词 python
     driver.find_element_by_css_selector(".inputstyle").send_keys(name)
