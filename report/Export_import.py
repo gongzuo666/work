@@ -38,7 +38,7 @@ def webElementWait(driver, timeout,lo_time,by_locate,locate):
     )
     return ele
 
-def ylh_login():
+def ylh_login(name,pwd):
     # 这两行是实现无界面的关键代码
     option = webdriver.ChromeOptions()
     option.add_argument('--headless')  # 实现静默模式，在电脑上不显示页面
@@ -60,8 +60,8 @@ def ylh_login():
     driver.switch_to.frame(eleIframe)
     webElementWait(driver, 10, 0.5, By.CSS_SELECTOR, "#switcher_plogin").click()
     # 2 输入用户名,密码
-    driver.find_element_by_css_selector(".inputstyle").send_keys("1440186482")
-    driver.find_element_by_css_selector(".inputstyle.password").send_keys("hebeihailiang")
+    driver.find_element_by_css_selector(".inputstyle").send_keys(name)
+    driver.find_element_by_css_selector(".inputstyle.password").send_keys(pwd)
     driver.find_element_by_css_selector(".btn").click()
     # 检查
     try:
@@ -192,7 +192,7 @@ def filename(name):
         return f"导入失败：{reps.text}"
 
 def main():
-    ylh = ylh_login()
+    ylh = ylh_login("1440186482", "hebeihailiang1234")
     if ylh != None:
         yesterdayData = export_report(ylh)
         print(yesterdayData)
