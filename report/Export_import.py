@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 # 今天的日期
 today = datetime.date.today()
 # 昨天的日期
-yesterday = today - datetime.timedelta(days=3)
+yesterday = today - datetime.timedelta(days=1)
 # 创建文件对象
 file = f'D:/广点通_{today}.csv'
 
