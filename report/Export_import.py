@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 # 今天的日期
 today = datetime.date.today()
 # 昨天的日期
-yesterday = today - datetime.timedelta(days=1)
+yesterday = today - datetime.timedelta(days=3)
 # 创建文件对象
 file = f'D:/广点通_{today}.csv'
 
@@ -69,8 +69,8 @@ def ylh_login(name,pwd):
         if aa.text == "优量汇":
             print("登录成功，关键信息获取成功")
         return driver.get_cookies()[-2]['value']
-    except Exception as e:
-        print(e)
+    except:
+        print("遇到了错误，可能元素不稳定或网络问题")
 
 def export_report(adnet_sso):
     # -----------------------------------------------接口数据获取--------------------------------------------
@@ -178,18 +178,18 @@ def filename(name):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
         'Cookie': 'management-Token=0f1c5ccd-64d5-4433-8003-475e81cd89b7; sidebarStatus=width:%20230px; leftStatus=margin-left:%20230px%3B; translate=transform:translateX(0); username=admin; password=e10adc3949ba59abbe56e057f20f883e; rememberMe=true; Admin-Token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYwNTA2NzgzOSwiaWF0IjoxNjA1MDYwNjM5fQ.zZ6fwID_QniedKun6Hg2FT3iOcgn2DN4R4BWU2VDfHSDiUs1FZZLA9frjWe7ugNIkEkSOPdDSlow5maB7c3h0g'
         }
-    f = open(name, 'rb')
-    # 请求参数
-    files = [('file', f)]
-    # 发送请求
-    reps = requests.post(api_url, files=files, headers=header)
-    # 打印内容
-    f.close()
-    # assert reps.text[0:4] == "导入成功"
-    if reps.text[0:4] == "导入成功":
-        return reps.text
-    else:
-        return f"导入失败：{reps.text}"
+    with open(name, 'rb') as f1:
+        # 请求参数
+        files = [('file', f1)]
+        # 发送请求
+        reps = requests.post(api_url, files=files, headers=header)
+        # 打印内容
+        # f.close()
+        # assert reps.text[0:4] == "导入成功"
+        if reps.text[0:4] == "导入成功":
+            return reps.text
+        else:
+            return f"导入失败：{reps.text}"
 
 def main():
     ylh = ylh_login("1440186482", "hebeihailiang1234")
