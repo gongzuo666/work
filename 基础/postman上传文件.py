@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @File  : postman.py
+# @File  : postman上传文件.py
 # Author: tian guang yuan
 # Time  : 2020/11/11 15:11
 import requests
