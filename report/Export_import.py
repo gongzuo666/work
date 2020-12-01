@@ -17,12 +17,11 @@ today = datetime.date.today()
 # 昨天的日期
 yesterday = today - datetime.timedelta(days=1)
 # 创建文件对象
-file = f'D:/广点通_{today}.csv'
+ob_name = f'D:/广点通_{today}.csv'
 
 # 定义显示等待函数
 def webElementWait(driver, timeout,lo_time,by_locate,locate):
     """
-
     :param driver: 浏览器驱动对象
     :param timeout: 最大等待时间
     :param lo_time: 轮询时间
@@ -69,86 +68,107 @@ def ylh_login(name,pwd):
         if aa.text == "优量汇":
             print("登录成功，关键信息获取成功")
         return driver.get_cookies()[-2]['value']
+        # return driver.get_cookies()
     except:
         print("遇到了错误，可能元素不稳定或网络问题")
 
+# -----------------------------------------------接口数据获取--------------------------------------------
+
 def export_report(adnet_sso):
-    # -----------------------------------------------接口数据获取--------------------------------------------
-    # adnet_sso = ylh_login()
     print("开始从优量汇系统->广告数据->下载报告")
     # 1. 打开文件写入
-    with open(file, 'w', encoding='UTF-8', newline='') as f:
+    with open(ob_name, 'w', encoding='UTF-8', newline='') as f:
         # 2. 基于文件对象构建 csv写入对象
         csv_writer = csv.writer(f)
         # 3. 构建列表头
-        csv_writer.writerow(["时间", "广告展示数", "点击量", "预计收入", "千次展示收益", "点击率"])
+        csv_writer.writerow(["日期", "媒体名称", "媒体ID", "广告位类型", "广告位名称", "广告位ID", "预估收入(元)", "千次展示收入(元)", "广告位请求量", "广告位返回量", "广告请求量", "广告返回量", "曝光量", "点击量", "广告位填充率", "广告位曝光率",	"点击率", "广告填充率", "广告曝光率", "点击成本(元)"
+])
 
         # 路径-url
-        api_url = 'https://adnet.qq.com/report/getReportTableData'
-        header = {
-            ':method': 'POST',
-            ':authority': 'adnet.qq.com',
-            ':scheme': 'https',
-            ':path': '/report/getReportTableData',
-            'content-length': '231',
-            'accept': '*/*',
-            'time': '1604999382657',
+        url = 'https://adnet.qq.com/eros/report/report_table_data'
+
+        headers = {
+            'authority': 'adnet.qq.com',
+            'accept': 'application/json',
+            'time': '1606786049445',
             'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
-            'sign': 'd3f37645e01b341fd9040f5516f9523e',
+            'sign': 'c4f97f92d1a6f3dbf0056010cbd6f547',
             'content-type': 'application/json',
             'origin': 'https://adnet.qq.com',
             'sec-fetch-site': 'same-origin',
             'sec-fetch-mode': 'cors',
             'sec-fetch-dest': 'empty',
             'referer': 'https://adnet.qq.com/report/list',
-            'accept-encoding': 'gzip, deflate, br',
             'accept-language': 'zh-CN,zh;q=0.9',
-            'Cookie': f'RK=NvbxPBzTMU; ptcz=084a03e673f30cca09d5641ac05b568029d44746d68457f5a57fb785ee1383b1; pgv_pvid=9586900888; pgv_pvi=6799438848; pgv_si=s5510458368; _qpsvr_localtk=0.2688100414601151; ptui_loginuin=1440186482; adnet_quality_plan_result=1; pgv_info=ssid=s190338262; ts_uid=5167191916; ts_refer=sso.e.qq.com/login/hub%3Fsso_redirect_uri%3Dhttps%3A//adnet.qq.com%26service_tag%3D14; adnet_uin=309000214374; adnet_openId=B4C78C5AEBEABD563DE1D4B88D96E73E; adnet_sso_flag=1; adnet_sso={adnet_sso}; PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVpblNlc3Npb25LZXkiOiIzMDkwMDAyMTQzNzQiLCJpc1N1cGVyVWluS2V5IjoiMCIsImN1c3RvbWVyVXNlcklkU2Vzc2lvbktleSI6IjE4MzM4MDQwIiwib3BlbklkU2Vzc2lvbktleSI6IkI0Qzc4QzVBRUJFQUJENTYzREUxRDRCODhEOTZFNzNFIn0sIm5iZiI6MTYwNDk5ODY5NywiaWF0IjoxNjA0OTk4Njk3fQ.u-JYqvuSa-czzZ4AG-NL9Nu6polDN6Qdc_B4qSsgs6o; adnet_uname=%E5%86%AF%E9%9B%85%E6%A2%A6; adnet_li=$1$oPdD32MW$FuDaeprKLq9BE70/C/YTL0; ts_last=adnet.qq.com/report/list'}
-
+            'cookie': f'RK=NvbxPBzTMU; ptcz=084a03e673f30cca09d5641ac05b568029d44746d68457f5a57fb785ee1383b1; pgv_pvid=9586900888; pgv_pvi=6799438848; ptui_loginuin=1440186482; adnet_quality_plan_result=1; ts_uid=5167191916; ts_refer=sso.e.qq.com/login/hub%3Fsso_redirect_uri%3Dhttps%3A//adnet.qq.com%26service_tag%3D14; pgv_si=s1136173056; _qpsvr_localtk=0.6917714785953393; adnet_uin=309000214374; adnet_openId=B4C78C5AEBEABD563DE1D4B88D96E73E; adnet_sso_flag=1; adnet_sso={adnet_sso}; pgv_info=ssid=s4255688433; PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVpblNlc3Npb25LZXkiOiIzMDkwMDAyMTQzNzQiLCJpc1N1cGVyVWluS2V5IjoiMCIsImN1c3RvbWVyVXNlcklkU2Vzc2lvbktleSI6IjE4MzM4MDQwIiwib3BlbklkU2Vzc2lvbktleSI6IkI0Qzc4QzVBRUJFQUJENTYzREUxRDRCODhEOTZFNzNFIn0sIm5iZiI6MTYwNjc4NTkzNiwiaWF0IjoxNjA2Nzg1OTM2fQ.yGdsGvpHbPMlMJcanYK2TKDUVv55Q8ndqvO4_X3I0pY; adnet_uname=%E6%B2%B3%E5%8C%97%E6%B5%B7%E9%87%8F%E5%BC%95%E6%93%8E%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8; adnet_li=$1$fdsffdfd$MdN6FVvND8zla1ma.QN0k/; ts_last=adnet.qq.com/settlement/list; adnet_uin=309000214374; adnet_uname=%E6%B2%B3%E5%8C%97%E6%B5%B7%E9%87%8F%E5%BC%95%E6%93%8E%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8; adnet_openId=B4C78C5AEBEABD563DE1D4B88D96E73E; adnet_li=$1$fdsffdfd$MdN6FVvND8zla1ma.QN0k/; adnet_sso_flag=1'
+        }
         # 参数
-        payload = json.dumps({
-                    "memberId": 309000214374,
-                    "startDate": f"{yesterday}",
-                    "endDate": f"{yesterday}",
-                    "placementType": [],
-                    "medium": [],
-                    "placement": [],
-                    "pageIndex": 0,
-                    "pageSize": 20,
-                    "orderByClause": "ReportDay desc",
-                    "selectAllMedium": "false",
-                    "selectAllPlacement": "false"
-                    })
-        sessions = requests.session()
-        sessions.mount('https://adnet.qq.com/report/getReportTableData', HTTP20Adapter())
-        reps = sessions.post(api_url, data=payload, headers=header)
-        if (reps.json()['data']['size']) != 0:
-            # 打印响应内容
-            list1 = reps.json()['data']['entities']
-            # 循环打印
-            for lis in list1:
-                # 获取日期
-                formatDate = lis['formatDate']
-                # 广告展示量
-                formatPV = lis['formatPV']
-                # 点击量
-                formatClick = lis['formatClick']
-                # 预计收入
-                formatRevenueAfterSharingByYuan = lis['formatRevenueAfterSharingByYuan']
-                # 千次展示收益
-                formatECPM = lis['formatECPM']
-                # 点击率
-                formatClickRate = lis['formatClickRate']
+        payload = json.dumps({"start_date":f"{yesterday}","end_date":f"{yesterday}","biz_filter":{"medium":[1110722686,1110952771,1111021172],"placement_type":["Native","SplashScreen"],"placement":["1081736795574379","3031138640024336","3071042204294838","4041533735375386","4061640225204002","5091936337348463","6011337367442318","6031931400412292","7021838308686202","7091747206506189","8021646276006271","9071133430809129"]},"group_by":["report_day","media_id","placement_type","placement_id"],"order_by":"","page":1,"page_size":20})
 
-                csv_writer.writerow([f"{formatDate}", f"{formatPV}", f"{formatClick}", f"{formatRevenueAfterSharingByYuan}", f"{formatECPM}", f"{formatClickRate}"])
-                # 5. 关闭文件
-                # f.close()
-                yesterday_data = f'日期:{formatDate} | 广告展示量:{formatPV} | 点击量:{formatClick} | 预计收入:{formatRevenueAfterSharingByYuan} | 千次展示收益:{formatECPM} | 点击率:{formatClickRate}'
-            return f"昨日{yesterday}数据明细：{yesterday_data}"
+        # 发送请求
+        reps = requests.post(url, headers=headers, data=payload)
+
+        # 广告数据列表数据条数
+        lists = len(reps.json()['data']['list'])
+        # 如果大于等于1执行for循环
+        if lists >= 1:
+
+            for one in range(lists):
+                pv_data = reps.json()['data']['list'][one]
+                # 日期
+                report_day = pv_data['report_day']
+                # 媒体名称
+                medium_name = pv_data['medium_name']
+                # 媒体ID
+                media_id = pv_data['media_id']
+                # 广告位类型
+                placement_type = pv_data['placement_type']
+                # 广告位名称
+                placement_name = pv_data['placement_name']
+                # 广告位ID
+                placement_id = pv_data['placement_id']+'\t'
+                # 预故收入
+                revenue = pv_data['revenue']
+                # 千次展示收入(元)
+                ecpm = pv_data['ecpm']
+                # 广告位请求量
+                request_count = pv_data['request_count']
+                # 广告位返回量
+                return_count = pv_data['return_count']
+                # 广告请求量
+                ad_request_count = pv_data['ad_request_count']
+                # 广告返回量
+                ad_return_count = pv_data['ad_return_count']
+                # 曝光量
+                pv = pv_data['pv']
+                # 点击量
+                click = pv_data['click']
+                # 广告位填充率
+                fill_rat = pv_data['fill_rate']
+                fill_rate = '%.2f%%' % (fill_rat * 1)
+                # 广告位曝光率
+                exposure_rat = pv_data['exposure_rate']
+                exposure_rate = '%.2f%%' % (exposure_rat * 1)
+                # 点击率
+                click_rat = pv_data['click_rate']
+                click_rate = '%.2f%%' % (click_rat * 1)
+                # 广告填充率
+                ad_fill_rat = pv_data['ad_fill_rate']
+                ad_fill_rate = '%.2f%%' % (ad_fill_rat * 1)
+                # 广告曝光率
+                ad_exposure_rat = pv_data['ad_exposure_rate']
+                ad_exposure_rate = '%.2f%%' % (ad_exposure_rat * 1)
+                # 点击成本(元)
+                cpc = pv_data['cpc']
+                # 写入到CSV文件中
+                csv_writer.writerow([f"{report_day}",f"{medium_name}",f"{media_id}",f"{placement_type}",f"{placement_name}",f"{placement_id}", f"{revenue}", f"{ecpm}", f"{request_count}", f"{return_count}", f"{ad_request_count}", f"{ad_return_count}", f"{pv}", f"{click}", f"{fill_rate}", f"{exposure_rate}", f"{click_rate}", f"{ad_fill_rate}", f"{ad_exposure_rate}", f"{cpc}"])
+            return f"昨日{yesterday}有数据，已下载完成"
+
         else:
             return f"昨日{yesterday}数据为空"
 
-# -----------------------------登录后台海量引擎广告投放后台管理系统-------------------------------------------
+# -----------------------------登录后台海量引擎广告投放后台管理系统--------------------------------------
+
 # 封装登录
 def login(name, pwd):
     # 路径-url
@@ -167,7 +187,7 @@ def login(name, pwd):
     return reps.json()['token']
 
 # 封装导入函数
-def filename(name):
+def file_name(name):
     print("开始向海量引擎广告投放后台管理系统->数据收益->导入数据")
     # 路径-url
     api_url = 'http://110.249.209.202:48081/data-import/import-excel-data'
@@ -178,13 +198,12 @@ def filename(name):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36',
         'Cookie': 'management-Token=0f1c5ccd-64d5-4433-8003-475e81cd89b7; sidebarStatus=width:%20230px; leftStatus=margin-left:%20230px%3B; translate=transform:translateX(0); username=admin; password=e10adc3949ba59abbe56e057f20f883e; rememberMe=true; Admin-Token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYwNTA2NzgzOSwiaWF0IjoxNjA1MDYwNjM5fQ.zZ6fwID_QniedKun6Hg2FT3iOcgn2DN4R4BWU2VDfHSDiUs1FZZLA9frjWe7ugNIkEkSOPdDSlow5maB7c3h0g'
         }
-    with open(name, 'rb') as f1:
+    with open(ob_name, 'rb') as f1:
         # 请求参数
         files = [('file', f1)]
         # 发送请求
         reps = requests.post(api_url, files=files, headers=header)
         # 打印内容
-        # f.close()
         # assert reps.text[0:4] == "导入成功"
         if reps.text[0:4] == "导入成功":
             return reps.text
@@ -192,25 +211,25 @@ def filename(name):
             return f"导入失败：{reps.text}"
 
 def main():
-    ylh = ylh_login("1440186482", "hebeihailiang1234")
-    if ylh != None:
-        yesterdayData = export_report(ylh)
+    adnet_sso = ylh_login("1440186482", "hebeihailiang1234")
+    # print(adnet_sso)
+    if adnet_sso != None:
+        yesterdayData = export_report(adnet_sso)
         print(yesterdayData)
         if yesterdayData == f"昨日{yesterday}数据为空":
             print("不进行导入")
             os.remove(file)
         else:
-            print(filename(file))
-            os.remove(file)
+            print(file_name(ob_name))
+            time.sleep(60)
+            os.remove(ob_name)
     else:
         print("登录失败，关键信息未获取")
 
 if __name__ == '__main__':
-    # print(export_report())
-    # print(filename(file))
-    # os.remove(file)
     main()
-    # print(ylh_login())
+    # adnet_sso = ylh_login("1440186482", "hebeihailiang1234")
+    # print(export_report(adnet_sso))
     # BlockingScheduler
     # scheduler = BlockingScheduler()
     # job = scheduler.add_job(main, 'cron', day_of_week='1-6', hour='*', minute=47)
