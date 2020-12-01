@@ -221,7 +221,6 @@ def main():
             os.remove(file)
         else:
             print(file_name(ob_name))
-            time.sleep(60)
             os.remove(ob_name)
     else:
         print("登录失败，关键信息未获取")
