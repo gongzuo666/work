@@ -218,7 +218,7 @@ def main():
         print(yesterdayData)
         if yesterdayData == f"昨日{yesterday}数据为空":
             print("不进行导入")
-            os.remove(file)
+            os.remove(ob_name)
         else:
             print(file_name(ob_name))
             os.remove(ob_name)
