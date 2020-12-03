@@ -6,6 +6,7 @@
 import time, json, os, csv, datetime
 from selenium import webdriver
 import requests
+from requests.packages import urllib3
 from hyper.contrib import HTTP20Adapter
 from apscheduler.schedulers.blocking import BlockingScheduler
 from selenium.webdriver.common.by import By
@@ -105,8 +106,10 @@ def export_report(adnet_sso):
         # 参数
         payload = json.dumps({"start_date":f"{yesterday}","end_date":f"{yesterday}","biz_filter":{"medium":[1110722686,1110952771,1111021172],"placement_type":["Native","SplashScreen"],"placement":["1081736795574379","3031138640024336","3071042204294838","4041533735375386","4061640225204002","5091936337348463","6011337367442318","6031931400412292","7021838308686202","7091747206506189","8021646276006271","9071133430809129"]},"group_by":["report_day","media_id","placement_type","placement_id"],"order_by":"","page":1,"page_size":20})
 
+        # 关闭SSL警告信息，
+        urllib3.disable_warnings()
         # 发送请求
-        reps = requests.post(url, headers=headers, data=payload)
+        reps = requests.post(url, headers=headers, data=payload, verify=False)
 
         # 广告数据列表数据条数
         lists = len(reps.json()['data']['list'])
@@ -227,13 +230,16 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # adnet_sso = ylh_login("1440186482", "hebeihailiang1234")
-    # print(export_report(adnet_sso))
-    # BlockingScheduler
+    # # adnet_sso = ylh_login("1440186482", "hebeihailiang1234")
+    # # print(export_report(adnet_sso))
     # scheduler = BlockingScheduler()
-    # job = scheduler.add_job(main, 'cron', day_of_week='1-6', hour='*', minute=47)
-    # scheduler.start()
+    # job = scheduler.add_job(main, 'cron', day_of_week='1-6', hour=19, minute=5, id='123')
+    # # scheduler.start()
+    # # scheduler.shutdown(wait=False)
+    # # print(scheduler.get_jobs())
+    # # 移除任务
     # job.remove()
-
+    # # 获取任务列表
+    # print(scheduler.get_jobs())
 
 
